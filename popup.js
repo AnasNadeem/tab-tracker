@@ -1,6 +1,7 @@
 import { truncate } from "./utils.js";
 
-const tabBody = document.getElementById('tabBody');
+const activeTbody = document.getElementById('activeTbody');
+const closedTbody = document.getElementById('closedTbody');
 
 const existingTabs = () => {
 	chrome.storage.local.get().then(result => {
@@ -9,7 +10,8 @@ const existingTabs = () => {
 			let tab = result[tabId];
 			if(tab.endTime){
 				tab['timeDiff'] = Math.round(((tab.endTime - tab.startTime)/1000)/60);
-				displanInTabBody(tab);
+				const tabRow = displanInTBody(tab);
+				closedTbody.innerHTML += tabRow;
 			}else{
 				chrome.tabs.get(parseInt(tabId)).then( chromeTab => {
 					const timeDiffInSec = (new Date().getTime() - tab.startTime)/1000;
@@ -17,7 +19,8 @@ const existingTabs = () => {
 					tab = {...tab, ...chromeTab};
 					tabMap[tabId] = tab;
 					chrome.storage.local.set(tabMap);
-					displanInTabBody(tab);
+					const tabRow = displanInTBody(tab);
+					activeTbody.innerHTML += tabRow;
 				})
 			}
 		}
@@ -26,10 +29,10 @@ const existingTabs = () => {
 
 existingTabs();
 
-const displanInTabBody = (tab) => {
+const displanInTBody = (tab) => {
 	// const pathname = new URL(tab.url);
 	const tabId = tab.id;
-	const tabRow = `<tr>
+	return `<tr>
 		<td id="${tabId}">
 			<a>
 				${truncate(tab.title, 20)}
@@ -37,5 +40,31 @@ const displanInTabBody = (tab) => {
 		</td>
 		<td>${tab.timeDiff} min</td>
 	</tr>`
-  	tabBody.innerHTML += tabRow;
+}
+
+
+let activeBtn = document.getElementById("activeBtn")
+let closeBtn = document.getElementById("closeBtn")
+
+activeBtn.addEventListener("click", function(){
+	active()
+})
+
+closeBtn.addEventListener("click", function(){
+	closed()
+})
+
+let activeDiv = document.getElementById("active")
+let closedDiv = document.getElementById("closed")
+let toggleBtn = document.getElementById("toggleBtn")
+
+function closed(){
+	activeDiv.style.left = "-400px"
+	closedDiv.style.left = "50px"
+	toggleBtn.style.left = "120px"
+}
+function active(){
+	activeDiv.style.left = "50px"
+	closedDiv.style.left = "400px"
+	toggleBtn.style.left = "0px"
 }
