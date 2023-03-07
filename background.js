@@ -2,7 +2,12 @@ let tabTime = {};
 
 chrome.tabs.onCreated.addListener((tab) => {
 	const time = new Date().getTime();
-	tabTime[tab.id] = {startTime: time, endTime: null}
+	tabTime[tab.id] = {
+		startTime: time,
+		endTime: null,
+		title: tab.title,
+		url: tab.url
+	}
 	chrome.storage.local.set(tabTime)
 });
 
@@ -11,6 +16,6 @@ chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
 	chrome.storage.local.get(tabIdString, (result) => {
 		const time = new Date().getTime();
 		result[tabIdString]['endTime'] = time;
-		chrome.storage.local.set(result)
+		chrome.storage.local.set(result);
 	});
 });
