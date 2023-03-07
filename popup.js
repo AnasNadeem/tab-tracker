@@ -68,3 +68,16 @@ function active(){
 	closedDiv.style.left = "400px"
 	toggleBtn.style.left = "0px"
 }
+
+let clearHistory = document.getElementById("clearHistory");
+clearHistory.addEventListener("click", function(){
+	chrome.storage.local.get().then((tabs) => {
+		for (const tabId in tabs) {
+			let tab = tabs[tabId];
+			if(tab.endTime){
+				chrome.storage.local.remove(tabId);
+			}
+		}
+	});
+	location.reload();
+})
