@@ -12,21 +12,16 @@ body{
     padding: 0px;
 	width: 290px;
     height: 450px;
-}
-.box{
-	width: 100%;
-    height: 100%;
-    position: relative;
     background-color: var(--accentCol);
-    padding: 5px;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%);
-    /* overflow: hidden; */
+}
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .button-box{
     width: 230px;
-    margin: 25px auto;
+    margin-top: 1.4rem;
     position: relative;
     border-radius: 30px;
     box-shadow: 0 0 20px 2px var(--shadowCol);
@@ -64,7 +59,7 @@ body{
     text-transform: uppercase;
 }
 .data-box{
-    /* top: 5rem; */
+    top: 5rem;
     position: absolute;
     width: 190px;
     transition: 0s;
@@ -76,13 +71,20 @@ body{
     display: none;
 }
 table{
-    width: 190px;
-    margin: 0px;
+    display: block;
     border-collapse: separate;
     border-spacing: 0;
 }
+tbody{
+    display: block;
+    max-height: 270px;
+    overflow-y: auto;
+}
 table tr th,
 table tr td{
+    width: 95px;
+    color: black;
+    text-align: center;
     border-right: 1px solid var(--accentCol);
 } 
 table tr th {
@@ -94,25 +96,16 @@ table tr td:first-child {
   border-left: 1px solid var(--accentCol);
   border-right: 1px solid black;
 }
-table tr td:last-child {
-  border-bottom: 1px solid var(--accentCol);
-  border-top: 1px solid black;
-}
+table tr td:last-child,
 table tr td:first-child {
   border-bottom: 1px solid var(--accentCol);
   border-top: 1px solid black;
 }
 th {
-    width: 95px;
-    color: black;
     font-size: 15px;
-    text-align: center;
     padding: 8px 14px 8px 14px;
 }
 td {
-    width: 95px;
-    color: black;
     font-size: 12px;
-    text-align: center;
     padding: 10px 5px 10px 5px;
 }
