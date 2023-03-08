@@ -13,7 +13,8 @@ const existingTabs = () => {
 				const tabRow = displanInTBody(tab);
 				closedTbody.innerHTML += tabRow;
 			}else{
-				chrome.tabs.get(parseInt(tabId)).then( chromeTab => {
+				chrome.tabs.get(parseInt(tabId))
+				.then( chromeTab => {
 					const timeDiffInSec = (new Date().getTime() - tab.startTime)/1000;
 					tab['timeDiff'] = Math.round(timeDiffInSec/60);
 					tab = {...tab, ...chromeTab};
@@ -22,6 +23,10 @@ const existingTabs = () => {
 					const tabRow = displanInTBody(tab);
 					activeTbody.innerHTML += tabRow;
 				})
+				.catch( error => {
+					chrome.storage.local.remove(tabId)
+					.then(() => console.log('Removed', tabId));
+				});
 			}
 		}
 	});
@@ -75,7 +80,8 @@ clearHistory.addEventListener("click", function(){
 		for (const tabId in tabs) {
 			let tab = tabs[tabId];
 			if(tab.endTime){
-				chrome.storage.local.remove(tabId);
+				chrome.storage.local.remove(tabId)
+				.then(() => console.log('Removed', tabId));
 			}
 		}
 	});

@@ -19,3 +19,16 @@ chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
 		chrome.storage.local.set(result);
 	});
 });
+
+chrome.windows.onRemoved.addListener((windowId) => {
+	chrome.storage.local.get().then((result) => {
+		for (const tabId in result) {
+			const time = new Date().getTime();
+			if (result[tabId]['endTime']){
+				continue;
+			}
+			result[tabId]['endTime'] = time;
+			chrome.storage.local.set(result);
+		}
+	});
+});
