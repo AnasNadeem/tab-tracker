@@ -1,14 +1,14 @@
-let tabTime = {};
+let tabMap = {};
 
 chrome.tabs.onCreated.addListener((tab) => {
 	const time = new Date().getTime();
-	tabTime[tab.id] = {
+	tabMap[tab.id] = {
 		startTime: time,
 		endTime: null,
 		title: tab.title,
 		url: tab.url
 	}
-	chrome.storage.local.set(tabTime)
+	chrome.storage.local.set(tabMap)
 });
 
 chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {

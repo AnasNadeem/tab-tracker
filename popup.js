@@ -10,7 +10,7 @@ const existingTabs = () => {
 			let tab = result[tabId];
 			if(tab.endTime){
 				tab['timeDiff'] = Math.round(((tab.endTime - tab.startTime)/1000)/60);
-				const tabRow = displanInTBody(tab);
+				const tabRow = displayInTbody(tab);
 				closedTbody.innerHTML += tabRow;
 			}else{
 				chrome.tabs.get(parseInt(tabId))
@@ -20,7 +20,7 @@ const existingTabs = () => {
 					tab = {...tab, ...chromeTab};
 					tabMap[tabId] = tab;
 					chrome.storage.local.set(tabMap);
-					const tabRow = displanInTBody(tab);
+					const tabRow = displayInTbody(tab);
 					activeTbody.innerHTML += tabRow;
 				})
 				.catch( error => {
@@ -34,19 +34,38 @@ const existingTabs = () => {
 
 existingTabs();
 
-const displanInTBody = (tab) => {
-	// const pathname = new URL(tab.url);
+const displayInTbody = (tab) => {
 	const tabId = tab.id;
-	return `<tr id="${tabId}">
-		<td>
-			<a title="${tab.title}">
-				${truncate(tab.title, 10)}
-			</a>
-		</td>
-		<td>${tab.timeDiff} min</td>
-	</tr>`
+	const tr = document.createElement('tr');
+	tr.id = tabId;
+
+	const td1 = document.createElement('td');
+	td1.title = tab.title;
+	td1.innerHTML = truncate(tab.title, 10);
+
+	const td2 = document.createElement('td');
+	td2.innerHTML = tab.timeDiff + " min";
+
+	tr.appendChild(td1);
+	tr.appendChild(td2);
+	tr.addEventListener("click", () => {
+		openTab(tab);
+	});
+	return tr.outerHTML;
+	// const tRow = `<tr id="${tabId}">
+	// 	<td title="${tab.title}">
+	// 		${truncate(tab.title, 10)}
+	// 	</td>
+	// 	<td>${tab.timeDiff} min</td>
+	// </tr>`
+	// return tRow;
 }
 
+const openTab = (tab) => {
+	console.log(tab)
+	chrome.tabs.update(tab.id, { active: true });
+    chrome.windows.update(tab.windowId, { focused: true });
+}
 
 let activeBtn = document.getElementById("activeBtn")
 let closeBtn = document.getElementById("closeBtn")
