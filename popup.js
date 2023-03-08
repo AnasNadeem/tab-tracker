@@ -48,25 +48,25 @@ const displayInTbody = (tab) => {
 
 	tr.appendChild(td1);
 	tr.appendChild(td2);
-	tr.addEventListener("click", () => {
-		openTab(tab);
-	});
+
 	return tr.outerHTML;
-	// const tRow = `<tr id="${tabId}">
-	// 	<td title="${tab.title}">
-	// 		${truncate(tab.title, 10)}
-	// 	</td>
-	// 	<td>${tab.timeDiff} min</td>
-	// </tr>`
-	// return tRow;
 }
 
 const openTab = (tab) => {
-	console.log(tab)
+	console.log('openTab', tab)
 	chrome.tabs.update(tab.id, { active: true });
     chrome.windows.update(tab.windowId, { focused: true });
 }
 
+activeTbody.addEventListener("click", (e) => {
+	if(e.target.nodeName === "TD"){
+		const tabId = e.target.parentElement.id;
+		chrome.storage.local.get(tabId, (result) => {
+			const tab = result[tabId];
+			openTab(tab);
+		});
+	}
+});
 let activeBtn = document.getElementById("activeBtn")
 let closeBtn = document.getElementById("closeBtn")
 
