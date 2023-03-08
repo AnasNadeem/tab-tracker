@@ -22,11 +22,11 @@ body{
     top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 .button-box{
     width: 230px;
-    margin: 40px auto;
+    margin: 25px auto;
     position: relative;
     border-radius: 30px;
     box-shadow: 0 0 20px 2px var(--shadowCol);
@@ -64,7 +64,7 @@ body{
     text-transform: uppercase;
 }
 .data-box{
-    top: 120px;
+    /* top: 5rem; */
     position: absolute;
     width: 190px;
     transition: 0s;
@@ -72,9 +72,8 @@ body{
 #active{
     left: 50px;
 }
-
 #closed{
-    left: 400px;
+    display: none;
 }
 table{
     width: 190px;

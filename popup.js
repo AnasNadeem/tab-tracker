@@ -36,7 +36,6 @@ existingTabs();
 
 const displanInTBody = (tab) => {
 	// const pathname = new URL(tab.url);
-	console.log(tab, tab.title)
 	const tabId = tab.id;
 	return `<tr id="${tabId}">
 		<td>
@@ -65,13 +64,14 @@ let closedDiv = document.getElementById("closed")
 let toggleBtn = document.getElementById("toggleBtn")
 
 function closed(){
-	activeDiv.style.left = "-400px"
-	closedDiv.style.left = "50px"
+	activeDiv.style = "display: none";
+	closedDiv.style = "display: block";
+	closedDiv.style.left = "50px";
 	toggleBtn.style.left = "120px"
 }
 function active(){
-	activeDiv.style.left = "50px"
-	closedDiv.style.left = "400px"
+	closedDiv.style = "display: none";
+	activeDiv.style = "display: block";
 	toggleBtn.style.left = "0px"
 }
 

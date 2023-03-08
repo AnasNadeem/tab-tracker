@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Tab Manager",
+  "name": "Tab Tracker",
   "version": "0.1.0",
   "action": {
     "default_icon": {
@@ -9,7 +9,7 @@
       "48": "images/icon-48.png",
       "128": "images/icon-128.png"
     },
-    "default_title": "Tab Manager",
+    "default_title": "Tab Tracker",
     "default_popup": "popup.html"
   },
   "background": {
