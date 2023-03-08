@@ -79,6 +79,12 @@ tbody{
     display: block;
     max-height: 270px;
     overflow-y: auto;
+    overflow-x: hidden;
+}
+thead, tr {
+    display:table;
+    table-layout:fixed;
+    width:100%;
 }
 table tr th,
 table tr td{
