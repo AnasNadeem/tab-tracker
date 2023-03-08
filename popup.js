@@ -36,11 +36,12 @@ existingTabs();
 
 const displanInTBody = (tab) => {
 	// const pathname = new URL(tab.url);
+	console.log(tab, tab.title)
 	const tabId = tab.id;
-	return `<tr>
-		<td id="${tabId}">
-			<a>
-				${truncate(tab.title, 20)}
+	return `<tr id="${tabId}">
+		<td>
+			<a title="${tab.title}">
+				${truncate(tab.title, 10)}
 			</a>
 		</td>
 		<td>${tab.timeDiff} min</td>

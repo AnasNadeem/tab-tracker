@@ -1,38 +1,36 @@
 <link href="popup.css" rel="stylesheet" type="text/css" />
 <script type="module" src="popup.js"></script>
 
-<div class="container">
-    <div class="box">
-        <div class="button-box">
-            <div id="toggleBtn"></div>
-            <button id="activeBtn" class="toggle-btn">active</button>
-            <button id="closeBtn" class="toggle-btn">closed</button>
-        </div>
-        <div id="active" class="data-box">
-            <table>
-              <thead>
-                <tr>
-                  <th>NAME</th>
-                  <th>TIME</th>                        
-                </tr>
-              </thead>
-              <tbody id="activeTbody"></tbody>
-            </table>
-        </div>
-        <div id="closed" class="data-box">
-          <table>
-            <thead>
-              <tr>
-                <th>NAME</th>
-                <th>TIME</th>                        
-              </tr>
-            </thead>
-            <tbody id="closedTbody"></tbody>
-          </table>
-			<button id="clearHistory" class="clearBtn">
-				Clear history
-			</button>
-        </div>
-		
+<div class="box">
+    <div class="button-box">
+        <div id="toggleBtn"></div>
+        <button id="activeBtn" class="toggle-btn">active</button>
+        <button id="closeBtn" class="toggle-btn">closed</button>
     </div>
+    <div id="active" class="data-box">
+        <table>
+          <thead>
+            <tr>
+              <th>NAME</th>
+              <th>TIME</th>                        
+            </tr>
+          </thead>
+          <tbody id="activeTbody" class="tabDataBody"></tbody>
+        </table>
+    </div>
+    <div id="closed" class="data-box">
+      <table>
+        <thead>
+          <tr>
+            <th>NAME</th>
+            <th>TIME</th>                      
+          </tr>
+        </thead>
+        <tbody id="closedTbody" class="tabDataBody"></tbody>
+      </table>
+  <button id="clearHistory" class="clearBtn">
+    Clear history
+  </button>
+    </div>
+
 </div>
