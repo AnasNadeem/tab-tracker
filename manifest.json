@@ -2,13 +2,14 @@
   "manifest_version": 3,
   "name": "Tab Tracker",
   "version": "0.1.0",
+  "icons": {
+    "32": "images/icon-32.png",
+    "64": "images/icon-64.png",
+    "128": "images/icon-128.png",
+    "256": "images/icon-256.png",
+    "768": "images/icon-768.png"
+  },
   "action": {
-    "default_icon": {
-      "16": "images/icon-16.png",
-      "32": "images/icon-32.png",
-      "48": "images/icon-48.png",
-      "128": "images/icon-128.png"
-    },
     "default_title": "Tab Tracker",
     "default_popup": "popup.html"
   },

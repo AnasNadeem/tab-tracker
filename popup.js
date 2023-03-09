@@ -41,7 +41,7 @@ const displayInTbody = (tab) => {
 
 	const td1 = document.createElement('td');
 	td1.title = tab.title;
-	td1.innerHTML = truncate(tab.title, 10);
+	td1.innerHTML = truncate(tab.title, 14);
 
 	const td2 = document.createElement('td');
 	td2.innerHTML = tab.timeDiff + " min";
