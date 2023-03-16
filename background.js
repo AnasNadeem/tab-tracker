@@ -34,7 +34,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 				const endTime = result[tabIdString]['tabTracker'][lastTabIndex]['endTime'];
 				const startTime = result[tabIdString]['tabTracker'][lastTabIndex]['startTime'];
 				const timeDiffInSec = (endTime - startTime)/1000;
-				result[tabIdString]['tabTracker'][lastTabIndex]['timeDiff'] = timeDiffInSec;
+				result[tabIdString]['tabTracker'][lastTabIndex]['timeDiffInSec'] = timeDiffInSec;
 			}
 			// Add a new tabTracker
 			result[tabIdString]['tabTracker'].push({
