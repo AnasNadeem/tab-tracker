@@ -20,7 +20,6 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 	chrome.storage.local.get(tabIdString)
 	.then(result => {
 		if (result[tabIdString]){
-			console.log(tab)
 			result[tabIdString]['title'] = tab.title;
 			result[tabIdString]['url'] = tab.url;
 
