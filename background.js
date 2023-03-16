@@ -25,6 +25,10 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 
 			// Update the last tabTracker
 			if(result[tabIdString]['tabTracker'].length > 0){
+				// Skip if the current tab url is same as the last tabTracker url
+				if(result[tabIdString]['tabTracker'][lastTabIndex]['url'] === tab.url){
+					return;
+				}
 				const lastTabIndex = result[tabIdString]['tabTracker'].length - 1;
 				result[tabIdString]['tabTracker'][lastTabIndex]['endTime'] = new Date().getTime();
 				const endTime = result[tabIdString]['tabTracker'][lastTabIndex]['endTime'];
