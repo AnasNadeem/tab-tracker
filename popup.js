@@ -2,6 +2,7 @@ import { truncate } from "./utils.js";
 
 const activeTbody = document.getElementById('activeTbody');
 const closedTbody = document.getElementById('closedTbody');
+const modalBody = document.getElementById('modalBody');
 
 const existingTabs = () => {
 	chrome.storage.local.get().then(result => {
@@ -107,3 +108,23 @@ clearHistory.addEventListener("click", function(){
 	});
 	location.reload();
 })
+
+
+// Modal
+let modal = document.getElementById("myModal");
+let modalBtn = document.getElementById("modalBtn");
+let modalClose = document.getElementsByClassName("modal-close")[0];
+
+modalBtn.onclick = function() {
+  modal.style.display = "block";
+}
+
+modalClose.onclick = function() {
+  modal.style.display = "none";
+}
+
+document.onclick = function(event) {
+	if (event.target == modal) {
+		modal.style.display = "none";
+  }
+}
