@@ -46,7 +46,29 @@ const displayInTbody = (tab) => {
 
 	const td2 = document.createElement('td');
 	td2.innerHTML = tab.timeDiff + " min";
+	td2.innerHTML += `<span id="modalBtn">
+		<i class="fa fa-info-circle" aria-hidden="true"></i>
+	</span>`;
+	tr.appendChild(td1);
+	tr.appendChild(td2);
 
+	return tr.outerHTML;
+}
+
+const displayInModalBody = (tab) => {
+	const tr = document.createElement('tr');
+	const td1 = document.createElement('td');
+	td1.title = tab.title;
+	td1.innerHTML = truncate(tab.title, 14);
+
+	const td2 = document.createElement('td');
+	if(tab.timeDiffInSec){
+		td2.innerHTML = tab.timeDiffInSec + " sec";
+	}else{
+		const endTime = new Date().getTime();
+		const timeDiffInSec = (endTime - tab.startTime)/1000;
+		td2.innerHTML = timeDiffInSec + ' sec (current)';
+	}
 	tr.appendChild(td1);
 	tr.appendChild(td2);
 
@@ -54,12 +76,24 @@ const displayInTbody = (tab) => {
 }
 
 const openTab = (tab) => {
-	console.log('openTab', tab)
 	chrome.tabs.update(tab.id, { active: true });
     chrome.windows.update(tab.windowId, { focused: true });
 }
 
 activeTbody.addEventListener("click", (e) => {
+	if (e.target.nodeName === "I") {
+		const currentTabId = e.target.parentElement.parentElement.parentElement.id;
+		chrome.storage.local.get(currentTabId, (result) => {
+			const currentTab = result[currentTabId];
+			const tabTracker = currentTab.tabTracker;
+			console.log(tabTracker);
+			for (const visitedTab of tabTracker){
+				const visitedTabRow = displayInModalBody(visitedTab);
+				modalBody.innerHTML += visitedTabRow;
+			}
+			modal.style.display = "block";
+		});
+	}
 	if(e.target.nodeName === "TD"){
 		const tabId = e.target.parentElement.id;
 		chrome.storage.local.get(tabId, (result) => {
