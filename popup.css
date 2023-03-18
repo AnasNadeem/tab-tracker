@@ -59,7 +59,8 @@ body{
     font-weight: bold;
     text-transform: uppercase;
 }
-.data-box{
+.data-box,
+.modal-content{
     top: 5rem;
     position: absolute;
     width: 190px;
@@ -88,7 +89,7 @@ thead, tr {
     width:100%;
 }
 table tr th,
-table tr td{
+table tbody tr td{
     width: 95px;
     color: black;
     text-align: center;
@@ -144,12 +145,9 @@ a:hover{
 }
 .modal-content {
     background-color: #fefefe;
-    margin-top: 4rem;
-    margin-left: auto;
-    margin-right: auto;
+    left: 50;
     padding-top: 5px;
     border: 1px solid var(--accentCol);
-    width: 80%;
     border-radius: .5rem;
 }
 .modal-close{

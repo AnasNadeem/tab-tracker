@@ -4,6 +4,7 @@ const activeTbody = document.getElementById('activeTbody');
 const closedTbody = document.getElementById('closedTbody');
 const modal = document.getElementById("myModal");
 const modalBody = document.getElementById('modalBody');
+const modelContent = document.getElementsByClassName("modal-content")[0];
 
 const existingTabs = () => {
 	chrome.storage.local.get().then(result => {
@@ -60,12 +61,12 @@ const displayInTbody = (tab) => {
 	return tr.outerHTML;
 }
 
-const displayInModalBody = (tab, visitedUrlInTab) => {
+const displayInModalBody = (visitedUrlInTab) => {
 	const tr = document.createElement('tr');
 	const td1 = document.createElement('td');
 	td1.title = visitedUrlInTab.title;
 	td1.innerHTML = `
-		<a class="tab-${tab.active}" href="${visitedUrlInTab.url}" title="${visitedUrlInTab.url}">
+		<a class="tab-false" href="${visitedUrlInTab.url}" title="${visitedUrlInTab.url}">
 			${truncate(visitedUrlInTab.title, 14)}
 		</a>
 	`;
@@ -109,16 +110,19 @@ closedTbody.addEventListener("click", (e) => {
 });
 
 const openModelOnClick = (e) => {
+	modal.style.display = "block";
 	const currentTabId = e.target.parentElement.parentElement.parentElement.id;
 	chrome.storage.local.get(currentTabId, (result) => {
 		const currentTab = result[currentTabId];
 		const tabTracker = currentTab.tabTracker;
-		modalBody.innerHTML = "";
-		for (const visitedTab of tabTracker){
-			const visitedTabRow = displayInModalBody(currentTab, visitedTab);
-			modalBody.innerHTML += visitedTabRow;
+		modalBody.innerHTML = '';
+		if(tabTracker.length===0){
+			modalBody.innerHTML = '<h2>No history found</h2>';
+			return;
 		}
-		modal.style.display = "block";
+		for (const visitedUrlInTab of tabTracker){
+			modalBody.innerHTML += displayInModalBody(visitedUrlInTab);
+		}
 	});
 };
 
