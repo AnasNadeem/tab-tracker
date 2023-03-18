@@ -55,7 +55,7 @@ const displayInTbody = (tab) => {
 	const td2 = document.createElement('td');
 	td2.innerHTML = tab.timeDiff + " min";
 	td2.innerHTML += `<span id="modalBtn">
-		<i class="fa fa-info-circle" aria-hidden="true"></i>
+		<i class="fa fa-info-circle" title="Show time breakdown" aria-hidden="true"></i>
 	</span>`;
 	tr.appendChild(td1);
 	tr.appendChild(td2);

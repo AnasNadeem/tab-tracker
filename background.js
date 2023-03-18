@@ -1,4 +1,3 @@
-
 chrome.tabs.onCreated.addListener((tab) => {
 	let tabMap = {};
 	const time = new Date().getTime();
