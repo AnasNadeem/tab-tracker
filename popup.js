@@ -1,7 +1,9 @@
-import { truncate } from "./utils.js";
+import { truncate, formatTime } from "./utils.js";
 
 const activeTbody = document.getElementById('activeTbody');
 const closedTbody = document.getElementById('closedTbody');
+const modal = document.getElementById("myModal");
+const modalBody = document.getElementById('modalBody');
 
 const existingTabs = () => {
 	chrome.storage.local.get().then(result => {
@@ -41,11 +43,41 @@ const displayInTbody = (tab) => {
 
 	const td1 = document.createElement('td');
 	td1.title = tab.title;
-	td1.innerHTML = truncate(tab.title, 14);
+	td1.innerHTML = `
+		<a class="tab-${tab.active}" href="${tab.url}" title="${tab.title}">
+			${truncate(tab.title, 14)}
+		</a>
+	`;
 
 	const td2 = document.createElement('td');
 	td2.innerHTML = tab.timeDiff + " min";
+	td2.innerHTML += `<span id="modalBtn">
+		<i class="fa fa-info-circle" aria-hidden="true"></i>
+	</span>`;
+	tr.appendChild(td1);
+	tr.appendChild(td2);
 
+	return tr.outerHTML;
+}
+
+const displayInModalBody = (tab, visitedUrlInTab) => {
+	const tr = document.createElement('tr');
+	const td1 = document.createElement('td');
+	td1.title = visitedUrlInTab.title;
+	td1.innerHTML = `
+		<a class="tab-${tab.active}" href="${visitedUrlInTab.url}" title="${visitedUrlInTab.url}">
+			${truncate(visitedUrlInTab.title, 14)}
+		</a>
+	`;
+
+	const td2 = document.createElement('td');
+	if(visitedUrlInTab.timeDiffInSec){
+		td2.innerHTML = formatTime(visitedUrlInTab.timeDiffInSec);
+	}else{
+		const endTime = new Date().getTime();
+		const timeDiffInSec = (endTime - visitedUrlInTab.startTime)/1000;
+		td2.innerHTML = formatTime(timeDiffInSec) + ' (current)';
+	}
 	tr.appendChild(td1);
 	tr.appendChild(td2);
 
@@ -53,22 +85,45 @@ const displayInTbody = (tab) => {
 }
 
 const openTab = (tab) => {
-	console.log('openTab', tab)
 	chrome.tabs.update(tab.id, { active: true });
     chrome.windows.update(tab.windowId, { focused: true });
 }
 
 activeTbody.addEventListener("click", (e) => {
-	if(e.target.nodeName === "TD"){
-		const tabId = e.target.parentElement.id;
+	if (e.target.nodeName === "I") {
+		openModelOnClick(e);
+	}
+	if(e.target.nodeName === "A"){
+		const tabId = e.target.parentElement.parentElement.id;
 		chrome.storage.local.get(tabId, (result) => {
 			const tab = result[tabId];
 			openTab(tab);
 		});
 	}
 });
-let activeBtn = document.getElementById("activeBtn")
-let closeBtn = document.getElementById("closeBtn")
+
+closedTbody.addEventListener("click", (e) => {
+	if (e.target.nodeName === "I") {
+		openModelOnClick(e);
+	}
+});
+
+const openModelOnClick = (e) => {
+	const currentTabId = e.target.parentElement.parentElement.parentElement.id;
+	chrome.storage.local.get(currentTabId, (result) => {
+		const currentTab = result[currentTabId];
+		const tabTracker = currentTab.tabTracker;
+		modalBody.innerHTML = "";
+		for (const visitedTab of tabTracker){
+			const visitedTabRow = displayInModalBody(currentTab, visitedTab);
+			modalBody.innerHTML += visitedTabRow;
+		}
+		modal.style.display = "block";
+	});
+};
+
+const activeBtn = document.getElementById('activeBtn');
+const closeBtn = document.getElementById("closeBtn")
 
 activeBtn.addEventListener("click", function(){
 	active()
@@ -94,7 +149,7 @@ function active(){
 	toggleBtn.style.left = "0px"
 }
 
-let clearHistory = document.getElementById("clearHistory");
+const clearHistory = document.getElementById("clearHistory");
 clearHistory.addEventListener("click", function(){
 	chrome.storage.local.get().then((tabs) => {
 		for (const tabId in tabs) {
@@ -107,3 +162,16 @@ clearHistory.addEventListener("click", function(){
 	});
 	location.reload();
 })
+
+
+const modalClose = document.getElementsByClassName("modal-close")[0];
+
+modalClose.onclick = function() {
+  modal.style.display = "none";
+}
+
+document.onclick = function(event) {
+	if (event.target == modal) {
+		modal.style.display = "none";
+  }
+}

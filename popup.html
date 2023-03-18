@@ -1,5 +1,5 @@
 <link href="popup.css" rel="stylesheet" type="text/css" />
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
 <div class="container">
     <div class="button-box">
         <div id="toggleBtn"></div>
@@ -11,7 +11,7 @@
           <thead>
             <tr>
               <th>NAME</th>
-              <th>TIME</th>                        
+              <th>TIME</th>                
             </tr>
           </thead>
           <tbody id="activeTbody"></tbody>
@@ -31,5 +31,20 @@
         Clear history
       </button>
     </div>
+</div>
+
+<div id="myModal" class="modal">
+  <span class="modal-close">&times;</span>
+  <div class="modal-content">
+    <table>
+      <thead>
+        <tr>
+          <th>NAME</th>
+          <th>TIME</th>
+        </tr>
+      </thead>
+      <tbody id="modalBody"></tbody>
+    </table>
+  </div>
 </div>
 <script type="module" src="popup.js"></script>
