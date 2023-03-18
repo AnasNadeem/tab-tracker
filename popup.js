@@ -42,8 +42,11 @@ const displayInTbody = (tab) => {
 	tr.id = tabId;
 
 	const td1 = document.createElement('td');
-	td1.title = tab.title;
-	td1.innerHTML = truncate(tab.title, 14);
+	td1.innerHTML = `
+		<a href="#" title="${tab.title}">
+			${truncate(tab.title, 14)}
+		</a>
+	`;
 
 	const td2 = document.createElement('td');
 	td2.innerHTML = tab.timeDiff + " min";
@@ -89,8 +92,8 @@ activeTbody.addEventListener("click", (e) => {
 	if (e.target.nodeName === "I") {
 		openModelOnClick(e);
 	}
-	if(e.target.nodeName === "TD"){
-		const tabId = e.target.parentElement.id;
+	if(e.target.nodeName === "A"){
+		const tabId = e.target.parentElement.parentElement.id;
 		chrome.storage.local.get(tabId, (result) => {
 			const tab = result[tabId];
 			openTab(tab);
