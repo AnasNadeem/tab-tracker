@@ -2,6 +2,7 @@ import { truncate, formatTime } from "./utils.js";
 
 const activeTbody = document.getElementById('activeTbody');
 const closedTbody = document.getElementById('closedTbody');
+const modal = document.getElementById("myModal");
 const modalBody = document.getElementById('modalBody');
 
 const existingTabs = () => {
@@ -59,7 +60,11 @@ const displayInModalBody = (tab) => {
 	const tr = document.createElement('tr');
 	const td1 = document.createElement('td');
 	td1.title = tab.title;
-	td1.innerHTML = truncate(tab.title, 14);
+	td1.innerHTML = `
+		<a href="${tab.url}" title="${tab.url}">
+			${truncate(tab.title, 14)}
+		</a>
+	`;
 
 	const td2 = document.createElement('td');
 	if(tab.timeDiffInSec){
@@ -129,7 +134,7 @@ function active(){
 	toggleBtn.style.left = "0px"
 }
 
-let clearHistory = document.getElementById("clearHistory");
+const clearHistory = document.getElementById("clearHistory");
 clearHistory.addEventListener("click", function(){
 	chrome.storage.local.get().then((tabs) => {
 		for (const tabId in tabs) {
@@ -144,14 +149,7 @@ clearHistory.addEventListener("click", function(){
 })
 
 
-// Modal
-let modal = document.getElementById("myModal");
-// let modalBtn = document.getElementById("modalBtn");
-let modalClose = document.getElementsByClassName("modal-close")[0];
-
-// modalBtn.onclick = function() {
-//   modal.style.display = "block";
-// }
+const modalClose = document.getElementsByClassName("modal-close")[0];
 
 modalClose.onclick = function() {
   modal.style.display = "none";

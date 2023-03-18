@@ -121,7 +121,6 @@ td {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
-    padding-top: 4rem; /* Location of the box */
     left: 0;
     top: 0;
     width: 100%; /* Full width */
@@ -132,21 +131,24 @@ td {
 }
 .modal-content {
     background-color: #fefefe;
-    margin: auto;
-    padding-top: 20px;
+    margin-top: 4rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 5px;
     border: 1px solid var(--accentCol);
     width: 80%;
     border-radius: .5rem;
 }
 .modal-close{
-    color: #aaaaaa;
+    color: black;
     float: right;
     font-size: 28px;
     font-weight: bold;
+    margin-top: 2.25rem;
+    margin-right: 1.25rem;
 }
 .modal-close:hover,
 .modal-close:focus {
-    color: black;
     text-decoration: none;
     cursor: pointer;
 }
