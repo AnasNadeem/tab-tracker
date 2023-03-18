@@ -9,7 +9,7 @@ const modelContent = document.getElementsByClassName("modal-content")[0];
 const existingTabs = () => {
 	chrome.storage.local.get().then(result => {
 		for (const tabId in result) {
-			// let tabMap = {};
+			let tabMap = {};
 			let tab = result[tabId];
 			if(tab.endTime){
 				tab['timeDiff'] = Math.round(((tab.endTime - tab.startTime)/1000)/60);
@@ -18,10 +18,13 @@ const existingTabs = () => {
 				chrome.tabs.get(parseInt(tabId))
 				.then( chromeTab => {
 					const timeDiffInSec = (new Date().getTime() - tab.startTime)/1000;
-					tab['timeDiff'] = Math.round(timeDiffInSec/60);
+					tab['title'] = chromeTab.title;
+					tab['url'] = chromeTab.url;
+					tab['active'] = chromeTab.active;
 					// tab = {...tab, ...chromeTab};
-					// tabMap[tabId] = tab;
-					// chrome.storage.local.set(tabMap);
+					tabMap[tabId] = tab;
+					chrome.storage.local.set(tabMap);
+					tab['timeDiff'] = Math.round(timeDiffInSec/60);
 					const tabRow = displayInTbody(tab);
 					activeTbody.innerHTML += tabRow;
 				})

@@ -1,6 +1,6 @@
-let tabMap = {};
 
 chrome.tabs.onCreated.addListener((tab) => {
+	let tabMap = {};
 	const time = new Date().getTime();
 	tabMap[tab.id] = {
 		id: tab.id,
@@ -20,12 +20,9 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 	}
 	chrome.storage.local.get(tabIdString)
 	.then(result => {
-		if (!result[tabIdString]){
-			return;
-		}
 		result[tabIdString]['title'] = tab.title;
 		result[tabIdString]['url'] = tab.url;
-
+		result[tabIdString]['active'] = tab.active;
 		// Update the last tabTracker
 		if(result[tabIdString]['tabTracker'].length > 0){
 			const lastTabIndex = result[tabIdString]['tabTracker'].length - 1;
@@ -71,7 +68,6 @@ chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
 
 chrome.windows.onRemoved.addListener((windowId) => {
 	chrome.storage.local.get().then((result) => {
-		console.log(result);
 		if (!result){
 			return;
 		}
