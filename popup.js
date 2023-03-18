@@ -13,16 +13,18 @@ const existingTabs = () => {
 			let tab = result[tabId];
 			if(tab.endTime){
 				tab['timeDiff'] = Math.round(((tab.endTime - tab.startTime)/1000)/60);
-				const tabRow = displayInTbody(tab);
-				closedTbody.innerHTML += tabRow;
+				closedTbody.innerHTML += displayInTbody(tab);;
 			}else{
 				chrome.tabs.get(parseInt(tabId))
 				.then( chromeTab => {
 					const timeDiffInSec = (new Date().getTime() - tab.startTime)/1000;
-					tab['timeDiff'] = Math.round(timeDiffInSec/60);
-					tab = {...tab, ...chromeTab};
+					tab['title'] = chromeTab.title;
+					tab['url'] = chromeTab.url;
+					tab['active'] = chromeTab.active;
+					// tab = {...tab, ...chromeTab};
 					tabMap[tabId] = tab;
 					chrome.storage.local.set(tabMap);
+					tab['timeDiff'] = Math.round(timeDiffInSec/60);
 					const tabRow = displayInTbody(tab);
 					activeTbody.innerHTML += tabRow;
 				})
