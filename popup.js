@@ -42,8 +42,9 @@ const displayInTbody = (tab) => {
 	tr.id = tabId;
 
 	const td1 = document.createElement('td');
+	td1.title = tab.title;
 	td1.innerHTML = `
-		<a href="#" title="${tab.title}">
+		<a class="tab-${tab.active}" href="${tab.url}" title="${tab.title}">
 			${truncate(tab.title, 14)}
 		</a>
 	`;
@@ -59,22 +60,22 @@ const displayInTbody = (tab) => {
 	return tr.outerHTML;
 }
 
-const displayInModalBody = (tab) => {
+const displayInModalBody = (tab, visitedUrlInTab) => {
 	const tr = document.createElement('tr');
 	const td1 = document.createElement('td');
-	td1.title = tab.title;
+	td1.title = visitedUrlInTab.title;
 	td1.innerHTML = `
-		<a href="${tab.url}" title="${tab.url}">
-			${truncate(tab.title, 14)}
+		<a class="tab-${tab.active}" href="${visitedUrlInTab.url}" title="${visitedUrlInTab.url}">
+			${truncate(visitedUrlInTab.title, 14)}
 		</a>
 	`;
 
 	const td2 = document.createElement('td');
-	if(tab.timeDiffInSec){
-		td2.innerHTML = formatTime(tab.timeDiffInSec);
+	if(visitedUrlInTab.timeDiffInSec){
+		td2.innerHTML = formatTime(visitedUrlInTab.timeDiffInSec);
 	}else{
 		const endTime = new Date().getTime();
-		const timeDiffInSec = (endTime - tab.startTime)/1000;
+		const timeDiffInSec = (endTime - visitedUrlInTab.startTime)/1000;
 		td2.innerHTML = formatTime(timeDiffInSec) + ' (current)';
 	}
 	tr.appendChild(td1);
@@ -114,7 +115,7 @@ const openModelOnClick = (e) => {
 		const tabTracker = currentTab.tabTracker;
 		modalBody.innerHTML = "";
 		for (const visitedTab of tabTracker){
-			const visitedTabRow = displayInModalBody(visitedTab);
+			const visitedTabRow = displayInModalBody(currentTab, visitedTab);
 			modalBody.innerHTML += visitedTabRow;
 		}
 		modal.style.display = "block";

@@ -54,6 +54,13 @@ chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
 	chrome.storage.local.get(tabIdString, (result) => {
 		const time = new Date().getTime();
 		result[tabIdString]['endTime'] = time;
+		result[tabIdString]['active'] = false;
+		// Updating the last tabTracker
+		const tabTracker = result[tabIdString]['tabTracker']
+		result[tabIdString]['tabTracker'][tabTracker.length - 1]['endTime'] = time;
+		const lastTabStartTime = tabTracker[tabTracker.length - 1]['startTime'];
+		const timeDiffInSec = (time - lastTabStartTime)/1000;
+		result[tabIdString]['tabTracker'][tabTracker.length - 1]['timeDiffInSec'] = timeDiffInSec;
 		chrome.storage.local.set(result);
 	});
 });
@@ -66,6 +73,7 @@ chrome.windows.onRemoved.addListener((windowId) => {
 				continue;
 			}
 			result[tabId]['endTime'] = time;
+			result[tabId]['active'] = false;
 			chrome.storage.local.set(result);
 		}
 	});
