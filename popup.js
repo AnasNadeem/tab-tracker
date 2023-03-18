@@ -87,17 +87,7 @@ const openTab = (tab) => {
 
 activeTbody.addEventListener("click", (e) => {
 	if (e.target.nodeName === "I") {
-		const currentTabId = e.target.parentElement.parentElement.parentElement.id;
-		chrome.storage.local.get(currentTabId, (result) => {
-			const currentTab = result[currentTabId];
-			const tabTracker = currentTab.tabTracker;
-			modalBody.innerHTML = "";
-			for (const visitedTab of tabTracker){
-				const visitedTabRow = displayInModalBody(visitedTab);
-				modalBody.innerHTML += visitedTabRow;
-			}
-			modal.style.display = "block";
-		});
+		openModelOnClick(e);
 	}
 	if(e.target.nodeName === "TD"){
 		const tabId = e.target.parentElement.id;
@@ -107,8 +97,29 @@ activeTbody.addEventListener("click", (e) => {
 		});
 	}
 });
-let activeBtn = document.getElementById("activeBtn")
-let closeBtn = document.getElementById("closeBtn")
+
+closedTbody.addEventListener("click", (e) => {
+	if (e.target.nodeName === "I") {
+		openModelOnClick(e);
+	}
+});
+
+const openModelOnClick = (e) => {
+	const currentTabId = e.target.parentElement.parentElement.parentElement.id;
+	chrome.storage.local.get(currentTabId, (result) => {
+		const currentTab = result[currentTabId];
+		const tabTracker = currentTab.tabTracker;
+		modalBody.innerHTML = "";
+		for (const visitedTab of tabTracker){
+			const visitedTabRow = displayInModalBody(visitedTab);
+			modalBody.innerHTML += visitedTabRow;
+		}
+		modal.style.display = "block";
+	});
+};
+
+const activeBtn = document.getElementById('activeBtn');
+const closeBtn = document.getElementById("closeBtn")
 
 activeBtn.addEventListener("click", function(){
 	active()
