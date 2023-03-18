@@ -1,4 +1,4 @@
-import { truncate } from "./utils.js";
+import { truncate, formatTime } from "./utils.js";
 
 const activeTbody = document.getElementById('activeTbody');
 const closedTbody = document.getElementById('closedTbody');
@@ -63,11 +63,11 @@ const displayInModalBody = (tab) => {
 
 	const td2 = document.createElement('td');
 	if(tab.timeDiffInSec){
-		td2.innerHTML = tab.timeDiffInSec + " sec";
+		td2.innerHTML = formatTime(tab.timeDiffInSec);
 	}else{
 		const endTime = new Date().getTime();
 		const timeDiffInSec = (endTime - tab.startTime)/1000;
-		td2.innerHTML = timeDiffInSec + ' sec (current)';
+		td2.innerHTML = formatTime(timeDiffInSec) + ' (current)';
 	}
 	tr.appendChild(td1);
 	tr.appendChild(td2);
@@ -86,7 +86,7 @@ activeTbody.addEventListener("click", (e) => {
 		chrome.storage.local.get(currentTabId, (result) => {
 			const currentTab = result[currentTabId];
 			const tabTracker = currentTab.tabTracker;
-			console.log(tabTracker);
+			modalBody.innerHTML = "";
 			for (const visitedTab of tabTracker){
 				const visitedTabRow = displayInModalBody(visitedTab);
 				modalBody.innerHTML += visitedTabRow;
@@ -146,12 +146,12 @@ clearHistory.addEventListener("click", function(){
 
 // Modal
 let modal = document.getElementById("myModal");
-let modalBtn = document.getElementById("modalBtn");
+// let modalBtn = document.getElementById("modalBtn");
 let modalClose = document.getElementsByClassName("modal-close")[0];
 
-modalBtn.onclick = function() {
-  modal.style.display = "block";
-}
+// modalBtn.onclick = function() {
+//   modal.style.display = "block";
+// }
 
 modalClose.onclick = function() {
   modal.style.display = "none";
