@@ -4,7 +4,6 @@ const activeTbody = document.getElementById('activeTbody');
 const closedTbody = document.getElementById('closedTbody');
 const modal = document.getElementById("myModal");
 const modalBody = document.getElementById('modalBody');
-const modelContent = document.getElementsByClassName("modal-content")[0];
 
 const existingTabs = () => {
 	chrome.storage.local.get().then(result => {
@@ -53,10 +52,9 @@ const displayInTbody = (tab) => {
 	`;
 
 	const td2 = document.createElement('td');
+	td2.className = 'time-td';
 	td2.innerHTML = tab.timeDiff + " min";
-	td2.innerHTML += `<span id="modalBtn">
-		<i class="fa fa-info-circle" title="Show time breakdown" aria-hidden="true"></i>
-	</span>`;
+	td2.innerHTML += `<img src="images/info_icon.png" class="info-icon" title="Show time breakdown" />`;
 	tr.appendChild(td1);
 	tr.appendChild(td2);
 
@@ -93,7 +91,7 @@ const openTab = (tab) => {
 }
 
 activeTbody.addEventListener("click", (e) => {
-	if (e.target.nodeName === "I") {
+	if (e.target.nodeName === "IMG") {
 		openModelOnClick(e);
 	}
 	if(e.target.nodeName === "A"){
@@ -106,14 +104,14 @@ activeTbody.addEventListener("click", (e) => {
 });
 
 closedTbody.addEventListener("click", (e) => {
-	if (e.target.nodeName === "I") {
+	if (e.target.nodeName === "IMG") {
 		openModelOnClick(e);
 	}
 });
 
 const openModelOnClick = (e) => {
 	modal.style.display = "block";
-	const currentTabId = e.target.parentElement.parentElement.parentElement.id;
+	const currentTabId = e.target.parentElement.parentElement.id;
 	chrome.storage.local.get(currentTabId, (result) => {
 		const currentTab = result[currentTabId];
 		const tabTracker = currentTab.tabTracker;

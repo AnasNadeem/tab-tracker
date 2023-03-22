@@ -130,6 +130,15 @@ a:hover{
 .tab-false{
     color: black;
 }
+.time-td{
+    display: flex;
+    justify-content: center;
+}
+.info-icon{
+    height: 100%;
+    width: 1rem;
+    margin-left: 5px;
+}
 /* Modal CSS */
 .modal {
     display: none; /* Hidden by default */
