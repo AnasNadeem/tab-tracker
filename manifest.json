@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "Tab Tracker",
-  "description": "Track the time of tab with breakdown of visited url's on it",
+  "name": "Tab Time Tracker",
+  "description": "Track the time of tab from the moment you create till after closing it with breakdown of browsing history",
   "version": "0.1.0",
   "icons": {
     "32": "images/icon-32.png",
