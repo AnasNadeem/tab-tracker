@@ -119,6 +119,7 @@ chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
 		const currentTime = new Date().getTime();
 		result[tabIdString]['endTime'] = currentTime;
 		result[tabIdString]['active'] = false;
+		chrome.storage.local.set(result);
 		// Updating the last tabTracker
 		const tabTracker = result[tabIdString]['tabTracker']
 		if(tabTracker.length > 0){
