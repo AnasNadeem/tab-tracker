@@ -10,3 +10,13 @@ export function formatTime(timeInSec){
         return Math.round((timeInSec*100) +  Number.EPSILON)/100 + ' sec';
     }
 }
+
+export const totalTimeSpent = (tab) => {
+	const lastTabIndex = tab.tabTracker.length - 1;
+	const lastTab = tab.tabTracker[lastTabIndex];
+	if(lastTab.userEndTime){
+		return tab.timeSpentInSec;
+	}else{
+		return tab.timeSpentInSec + (new Date().getTime() - lastTab.userStartTime)/1000;
+	}
+}

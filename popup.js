@@ -1,4 +1,4 @@
-import { truncate, formatTime } from "./utils.js";
+import { truncate, formatTime, totalTimeSpent } from "./utils.js";
 
 const activeTbody = document.getElementById('activeTbody');
 const closedTbody = document.getElementById('closedTbody');
@@ -53,7 +53,7 @@ const displayInTbody = (tab) => {
 
 	const td2 = document.createElement('td');
 	td2.className = 'time-td';
-	td2.innerHTML = tab.timeDiff + " min";
+	td2.innerHTML = formatTime(totalTimeSpent(tab)) + ' | ' + tab.timeDiff + " min";
 	td2.innerHTML += `<img src="images/info_icon.png" class="info-icon" title="Show time breakdown" />`;
 	tr.appendChild(td1);
 	tr.appendChild(td2);
