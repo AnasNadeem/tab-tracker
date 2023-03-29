@@ -91,7 +91,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 			const timeSpentInSec = (currentTime - userStartTime)/1000;
 			result[tabIdString]['tabTracker'][lastTabIndex]['endTime'] = currentTime;
 			result[tabIdString]['tabTracker'][lastTabIndex]['userEndTime'] = currentTime;
-			result[tabIdString]['tabTracker'][lastTabIndex]['timeSpentInSec'] = timeSpentInSec;
+			result[tabIdString]['tabTracker'][lastTabIndex]['timeSpentInSec'] += timeSpentInSec;
 			result[tabIdString]['tabTracker'][lastTabIndex]['timeDiffInSec'] = timeDiffInSec;
 			result[tabIdString]['timeSpentInSec'] += timeSpentInSec;
 		}

@@ -11,7 +11,7 @@ const existingTabs = () => {
 			let tabMap = {};
 			let tab = result[tabId];
 			if(tab.endTime){
-				tab['timeDiff'] = Math.round(((tab.endTime - tab.startTime)/1000)/60);
+				tab['timeDiff'] = Math.round((tab.endTime - tab.startTime)/1000);
 				closedTbody.innerHTML += displayInTbody(tab);;
 			}else{
 				chrome.tabs.get(parseInt(tabId))
@@ -23,7 +23,7 @@ const existingTabs = () => {
 					// tab = {...tab, ...chromeTab};
 					tabMap[tabId] = tab;
 					chrome.storage.local.set(tabMap);
-					tab['timeDiff'] = Math.round(timeDiffInSec/60);
+					tab['timeDiff'] = timeDiffInSec;
 					const tabRow = displayInTbody(tab);
 					activeTbody.innerHTML += tabRow;
 				})
@@ -53,7 +53,7 @@ const displayInTbody = (tab) => {
 
 	const td2 = document.createElement('td');
 	td2.className = 'time-td';
-	td2.innerHTML = formatTime(totalTimeSpent(tab)) + ' | ' + tab.timeDiff + " min";
+	td2.innerHTML = formatTime(totalTimeSpent(tab)) + ' | ' + formatTime(tab.timeDiff);
 	td2.innerHTML += `<img src="images/info_icon.png" class="info-icon" title="Show time breakdown" />`;
 	tr.appendChild(td1);
 	tr.appendChild(td2);
@@ -71,14 +71,19 @@ const displayInModalBody = (visitedUrlInTab) => {
 		</a>
 	`;
 
+	const currentTime = new Date().getTime();
 	const td2 = document.createElement('td');
+	let td2TimeText = (visitedUrlInTab.userEndTime
+					   ? formatTime(visitedUrlInTab.timeSpentInSec)
+					   : formatTime(visitedUrlInTab.timeSpentInSec + (currentTime - visitedUrlInTab.userStartTime)/1000));
+	td2TimeText += ' | ';
 	if(visitedUrlInTab.timeDiffInSec){
-		td2.innerHTML = formatTime(visitedUrlInTab.timeDiffInSec);
+		td2TimeText += formatTime(visitedUrlInTab.timeDiffInSec);
 	}else{
-		const endTime = new Date().getTime();
-		const timeDiffInSec = (endTime - visitedUrlInTab.startTime)/1000;
-		td2.innerHTML = formatTime(timeDiffInSec) + ' (current)';
+		const timeDiffInSec = (currentTime - visitedUrlInTab.startTime)/1000;
+		td2TimeText += formatTime(timeDiffInSec) + ' (current)';
 	}
+	td2.innerHTML = td2TimeText;
 	tr.appendChild(td1);
 	tr.appendChild(td2);
 
