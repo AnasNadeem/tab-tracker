@@ -116,16 +116,22 @@ chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
 		if (!result){
 			return;
 		}
-		const time = new Date().getTime();
-		result[tabIdString]['endTime'] = time;
+		const currentTime = new Date().getTime();
+		result[tabIdString]['endTime'] = currentTime;
 		result[tabIdString]['active'] = false;
 		// Updating the last tabTracker
 		const tabTracker = result[tabIdString]['tabTracker']
 		if(tabTracker.length > 0){
-			result[tabIdString]['tabTracker'][tabTracker.length - 1]['endTime'] = time;
-			const lastTabStartTime = tabTracker[tabTracker.length - 1]['startTime'];
-			const timeDiffInSec = (time - lastTabStartTime)/1000;
-			result[tabIdString]['tabTracker'][tabTracker.length - 1]['timeDiffInSec'] = timeDiffInSec;
+			const lastTabIndex = tabTracker.length - 1;
+			const lastTabStartTime = tabTracker[lastTabIndex]['startTime'];
+			result[tabIdString]['tabTracker'][lastTabIndex]['endTime'] = currentTime;
+			const timeDiffInSec = (currentTime - lastTabStartTime)/1000;
+			result[tabIdString]['tabTracker'][lastTabIndex]['timeDiffInSec'] = timeDiffInSec;
+
+			const lastTabUserStartTime = tabTracker[lastTabIndex]['userStartTime'];
+			result[tabIdString]['tabTracker'][lastTabIndex]['userEndTime'] = currentTime;
+			const timeSpentInSec = (currentTime - lastTabUserStartTime)/1000;
+			result[tabIdString]['tabTracker'][lastTabIndex]['timeSpentInSec'] += timeSpentInSec;
 		}
 		chrome.storage.local.set(result);
 	});
