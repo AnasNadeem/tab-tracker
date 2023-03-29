@@ -7,6 +7,7 @@ chrome.tabs.onCreated.addListener((tab) => {
 		endTime: null,
 		title: tab.title,
 		url: tab.url,
+		active: tab.active,
 		timeSpentInSec: 0,
 		tabTracker: []
 	}
@@ -44,22 +45,24 @@ const updateOtherTabs = (activeTabId, currentTime) => {
 			if (!result[tabId]['active']){
 				continue;
 			}
-			result[tabId]['active'] = false;
-			chrome.storage.local.set(result);
-			if(result[tabId]['tabTracker'].length === 0){
+			let tabMap = {};
+			tabMap[tabId] = result[tabId];
+			tabMap[tabId]['active'] = false;
+			chrome.storage.local.set(tabMap);
+			if(tabMap[tabId]['tabTracker'].length === 0){
 				continue;
 			}
-			const lastTabIndex = result[tabId]['tabTracker'].length - 1;
-			const userStartTime = result[tabId]['tabTracker'][lastTabIndex]['userStartTime'];
-			const userEndTime = result[tabId]['tabTracker'][lastTabIndex]['userEndTime'];
+			const lastTabIndex = tabMap[tabId]['tabTracker'].length - 1;
+			const userStartTime = tabMap[tabId]['tabTracker'][lastTabIndex]['userStartTime'];
+			const userEndTime = tabMap[tabId]['tabTracker'][lastTabIndex]['userEndTime'];
 			if(userEndTime){
 				continue;
 			}
 			const timeSpentInSec = (currentTime - userStartTime)/1000;
-			result[tabId]['tabTracker'][lastTabIndex]['userEndTime'] = currentTime;
-			result[tabId]['tabTracker'][lastTabIndex]['timeSpentInSec'] += timeSpentInSec;
-			result[tabId]['timeSpentInSec'] += timeSpentInSec;
-			chrome.storage.local.set(result);
+			tabMap[tabId]['tabTracker'][lastTabIndex]['userEndTime'] = currentTime;
+			tabMap[tabId]['tabTracker'][lastTabIndex]['timeSpentInSec'] += timeSpentInSec;
+			tabMap[tabId]['timeSpentInSec'] += timeSpentInSec;
+			chrome.storage.local.set(tabMap);
 		}
 	});
 };
