@@ -52,11 +52,17 @@ const displayInTbody = (tab, currentTime) => {
 	`;
 
 	const td2 = document.createElement('td');
-	td2.className = 'time-td';
-	td2.innerHTML = formatTime(totalTimeSpent(tab, currentTime)) + ' | ' + formatTime(tab.timeDiff);
-	td2.innerHTML += `<img src="images/info_icon.png" class="info-icon" title="Show time breakdown" />`;
+	// td2.className = 'time-td';
+	td2.innerHTML = formatTime(totalTimeSpent(tab, currentTime));
+
+	const td3 = document.createElement('td');
+	// td3.className = 'time-td';
+	td3.innerHTML = formatTime(tab.timeDiff);
+	td3.innerHTML += `<img src="images/info_icon.png" class="info-icon" title="Show time breakdown" />`;
+
 	tr.appendChild(td1);
 	tr.appendChild(td2);
+	tr.appendChild(td3);
 
 	return tr.outerHTML;
 }
@@ -142,16 +148,18 @@ closeBtn.addEventListener("click", function(){
 
 let activeDiv = document.getElementById("active")
 let closedDiv = document.getElementById("closed")
+let clearHistoryBtn = document.getElementById("clearHistoryBtn")
 let toggleBtn = document.getElementById("toggleBtn")
 
 function closed(){
 	activeDiv.style = "display: none";
 	closedDiv.style = "display: block";
-	closedDiv.style.left = "50px";
+	clearHistoryBtn.style = "display: block";
 	toggleBtn.style.left = "120px"
 }
 function active(){
 	closedDiv.style = "display: none";
+	clearHistoryBtn.style = "display: none";
 	activeDiv.style = "display: block";
 	toggleBtn.style.left = "0px"
 }

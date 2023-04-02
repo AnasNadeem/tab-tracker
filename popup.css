@@ -63,14 +63,18 @@ body{
 .modal-content{
     top: 5rem;
     position: absolute;
-    width: 190px;
+    width: 265px;
     transition: 0s;
-}
-#active{
-    left: 50px;
+    justify-content: center;
+    align-items: center;
 }
 #closed{
     display: none;
+}
+#clearHistoryBtn{
+    display: none;
+    position: absolute;
+    bottom: 15;
 }
 table{
     display: block;
@@ -90,7 +94,7 @@ thead, tr {
 }
 table tr th,
 table tbody tr td{
-    width: 95px;
+    width: 90px;
     color: black;
     text-align: center;
     border-right: 1px solid var(--accentCol);
@@ -100,12 +104,16 @@ table tr th {
   border-top: solid 1px var(--accentCol);
 }
 table tr th:first-child,
-table tr td:first-child {
+table tr td:first-child,
+table tr th:nth-child(2),
+table tr td:nth-child(2){
   border-left: 1px solid var(--accentCol);
   border-right: 1px solid black;
 }
+
 table tr td:last-child,
-table tr td:first-child {
+table tr td:first-child,
+table tr td:nth-child(2){
   border-bottom: 1px solid var(--accentCol);
   border-top: 1px solid black;
 }
@@ -137,7 +145,7 @@ a:hover{
 .info-icon{
     height: 100%;
     width: 1rem;
-    margin-left: 5px;
+    margin-left: 2px;
 }
 /* Modal CSS */
 .modal {
