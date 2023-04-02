@@ -11,12 +11,20 @@ export function formatTime(timeInSec){
     }
 }
 
-export const totalTimeSpent = (tab) => {
+export const totalTimeSpent = (tab, currentTime) => {
 	const lastTabIndex = tab.tabTracker.length - 1;
 	const lastTab = tab.tabTracker[lastTabIndex];
-	if(lastTab.userEndTime){
+	if((lastTab.userStartTime && lastTab.userEndTime) || (!lastTab.userStartTime && !lastTab.userEndTime)){
 		return tab.timeSpentInSec;
 	}else{
-		return tab.timeSpentInSec + (new Date().getTime() - lastTab.userStartTime)/1000;
+		return tab.timeSpentInSec + (currentTime - lastTab.userStartTime)/1000;
+	}
+}
+
+export const totalTImeSpentOnVisitedURL = (visitedUrlInTab, currentTime) => {
+    if((visitedUrlInTab.userStartTime && visitedUrlInTab.userEndTime) || (!visitedUrlInTab.userStartTime && !visitedUrlInTab.userEndTime)){
+		return visitedUrlInTab.timeSpentInSec;
+	}else{
+		return visitedUrlInTab.timeSpentInSec + (currentTime - visitedUrlInTab.userStartTime)/1000;
 	}
 }

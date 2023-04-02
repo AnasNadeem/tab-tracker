@@ -1,4 +1,4 @@
-import { truncate, formatTime, totalTimeSpent } from "./utils.js";
+import { truncate, formatTime, totalTimeSpent, totalTImeSpentOnVisitedURL } from "./utils.js";
 
 const activeTbody = document.getElementById('activeTbody');
 const closedTbody = document.getElementById('closedTbody');
@@ -16,15 +16,15 @@ const existingTabs = () => {
 			}else{
 				chrome.tabs.get(parseInt(tabId))
 				.then( chromeTab => {
-					const timeDiffInSec = (new Date().getTime() - tab.startTime)/1000;
+					const currentTime = new Date().getTime();
 					tab['title'] = chromeTab.title;
 					tab['url'] = chromeTab.url;
 					tab['active'] = chromeTab.active;
 					// tab = {...tab, ...chromeTab};
 					tabMap[tabId] = tab;
 					chrome.storage.local.set(tabMap);
-					tab['timeDiff'] = timeDiffInSec;
-					const tabRow = displayInTbody(tab);
+					tab['timeDiff'] = (currentTime- tab.startTime)/1000;;
+					const tabRow = displayInTbody(tab, currentTime);
 					activeTbody.innerHTML += tabRow;
 				})
 				.catch( error => {
@@ -38,7 +38,7 @@ const existingTabs = () => {
 
 existingTabs();
 
-const displayInTbody = (tab) => {
+const displayInTbody = (tab, currentTime) => {
 	const tabId = tab.id;
 	const tr = document.createElement('tr');
 	tr.id = tabId;
@@ -53,7 +53,7 @@ const displayInTbody = (tab) => {
 
 	const td2 = document.createElement('td');
 	td2.className = 'time-td';
-	td2.innerHTML = formatTime(totalTimeSpent(tab)) + ' | ' + formatTime(tab.timeDiff);
+	td2.innerHTML = formatTime(totalTimeSpent(tab, currentTime)) + ' | ' + formatTime(tab.timeDiff);
 	td2.innerHTML += `<img src="images/info_icon.png" class="info-icon" title="Show time breakdown" />`;
 	tr.appendChild(td1);
 	tr.appendChild(td2);
@@ -73,9 +73,7 @@ const displayInModalBody = (visitedUrlInTab) => {
 
 	const currentTime = new Date().getTime();
 	const td2 = document.createElement('td');
-	let td2TimeText = (visitedUrlInTab.userEndTime
-					   ? formatTime(visitedUrlInTab.timeSpentInSec)
-					   : formatTime(visitedUrlInTab.timeSpentInSec + (currentTime - visitedUrlInTab.userStartTime)/1000));
+	let td2TimeText = formatTime(totalTImeSpentOnVisitedURL(visitedUrlInTab, currentTime));
 	td2TimeText += ' | ';
 	if(visitedUrlInTab.timeDiffInSec){
 		td2TimeText += formatTime(visitedUrlInTab.timeDiffInSec);

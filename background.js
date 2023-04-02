@@ -117,6 +117,7 @@ chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
 			return;
 		}
 		const currentTime = new Date().getTime();
+		const wasTabActive = result[tabIdString]['active'];
 		result[tabIdString]['endTime'] = currentTime;
 		result[tabIdString]['active'] = false;
 		chrome.storage.local.set(result);
@@ -130,8 +131,9 @@ chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
 			result[tabIdString]['tabTracker'][lastTabIndex]['timeDiffInSec'] = timeDiffInSec;
 
 			const lastTabUserStartTime = tabTracker[lastTabIndex]['userStartTime'];
-			result[tabIdString]['tabTracker'][lastTabIndex]['userEndTime'] = currentTime;
-			const timeSpentInSec = (currentTime - lastTabUserStartTime)/1000;
+			const lastTabUserEndTime = tabTracker[lastTabIndex]['userEndTime'];
+			result[tabIdString]['tabTracker'][lastTabIndex]['userEndTime'] = wasTabActive ? currentTime : lastTabUserEndTime;
+			const timeSpentInSec = (result[tabIdString]['tabTracker'][lastTabIndex]['userEndTime'] - lastTabUserStartTime)/1000;
 			result[tabIdString]['tabTracker'][lastTabIndex]['timeSpentInSec'] += timeSpentInSec;
 		}
 		chrome.storage.local.set(result);
