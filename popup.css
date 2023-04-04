@@ -11,7 +11,7 @@
 body{
     margin: 0px;
     padding: 0px;
-	width: 290px;
+	width: 300px;
     height: 450px;
     background-color: var(--accentCol);
 }
@@ -63,7 +63,7 @@ body{
 .modal-content{
     top: 5rem;
     position: absolute;
-    width: 265px;
+    width: 275px;
     transition: 0s;
     justify-content: center;
     align-items: center;
@@ -81,24 +81,32 @@ table{
     border-collapse: separate;
     border-spacing: 0;
 }
+thead{
+    width: calc(100% - 16px);
+}
 tbody{
     display: block;
     max-height: 270px;
     overflow-y: auto;
     overflow-x: hidden;
+    /* width: calc(100% + 16px); */
 }
 thead, tr {
     display:table;
     table-layout:fixed;
     width:100%;
 }
-table tr th,
+table thead tr th,
 table tbody tr td{
     width: 90px;
     color: black;
     text-align: center;
     border-right: 1px solid var(--accentCol);
 } 
+table thead tr th:nth-child(2),
+table tbody tr td:nth-child(2){
+    width: 86px;
+}
 table tr th {
   text-align: center;
   border-top: solid 1px var(--accentCol);

@@ -42,27 +42,34 @@ const updateOtherTabs = (activeTabId, currentTime) => {
 			if (tabId === activeTabId){
 				continue;
 			}
+
 			if (!result[tabId]['active']){
 				continue;
 			}
-			let tabMap = {};
-			tabMap[tabId] = result[tabId];
-			tabMap[tabId]['active'] = false;
-			chrome.storage.local.set(tabMap);
-			if(tabMap[tabId]['tabTracker'].length === 0){
-				continue;
-			}
-			const lastTabIndex = tabMap[tabId]['tabTracker'].length - 1;
-			const userStartTime = tabMap[tabId]['tabTracker'][lastTabIndex]['userStartTime'];
-			const userEndTime = tabMap[tabId]['tabTracker'][lastTabIndex]['userEndTime'];
-			if(userEndTime){
-				continue;
-			}
-			const timeSpentInSec = (currentTime - userStartTime)/1000;
-			tabMap[tabId]['tabTracker'][lastTabIndex]['userEndTime'] = currentTime;
-			tabMap[tabId]['tabTracker'][lastTabIndex]['timeSpentInSec'] += timeSpentInSec;
-			tabMap[tabId]['timeSpentInSec'] += timeSpentInSec;
-			chrome.storage.local.set(tabMap);
+
+			chrome.tabs.get(parseInt(tabId))
+			.then( chromeTab => {
+				let tabMap = {};
+				tabMap[tabId] = result[tabId];
+				tabMap[tabId]['active'] = chromeTab.active;
+				chrome.storage.local.set(tabMap);
+
+				if(tabMap[tabId]['tabTracker'].length === 0){
+					return;
+				}
+				const lastTabIndex = tabMap[tabId]['tabTracker'].length - 1;
+				const userStartTime = tabMap[tabId]['tabTracker'][lastTabIndex]['userStartTime'];
+				const userEndTime = tabMap[tabId]['tabTracker'][lastTabIndex]['userEndTime'];
+				if(userEndTime){
+					return;
+				}
+				const timeSpentInSec = (currentTime - userStartTime)/1000;
+				tabMap[tabId]['tabTracker'][lastTabIndex]['userEndTime'] = currentTime;
+				tabMap[tabId]['tabTracker'][lastTabIndex]['timeSpentInSec'] += timeSpentInSec;
+				tabMap[tabId]['timeSpentInSec'] += timeSpentInSec;
+				chrome.storage.local.set(tabMap);
+			})
+			.catch(error => console.log(error));
 		}
 	});
 };
@@ -78,6 +85,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 		result[tabIdString]['url'] = tab.url;
 		result[tabIdString]['active'] = tab.active;
 		const currentTime = new Date().getTime();
+
 		// Update the last tabTracker
 		if(result[tabIdString]['tabTracker'].length > 0){
 			const lastTabIndex = result[tabIdString]['tabTracker'].length - 1;
@@ -95,6 +103,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 			result[tabIdString]['tabTracker'][lastTabIndex]['timeDiffInSec'] = timeDiffInSec;
 			result[tabIdString]['timeSpentInSec'] += timeSpentInSec;
 		}
+
 		// Add a new tabTracker
 		result[tabIdString]['tabTracker'].push({
 			startTime: currentTime,
@@ -112,31 +121,38 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 
 chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
 	const tabIdString = `${tabId}`;
-	chrome.storage.local.get(tabIdString, (result) => {
+	chrome.storage.local.get(tabIdString).then(result => {
 		if (!result){
 			return;
 		}
+		let tabMap = {};
+		tabMap[tabId] = result[tabIdString]
 		const currentTime = new Date().getTime();
 		const wasTabActive = result[tabIdString]['active'];
-		result[tabIdString]['endTime'] = currentTime;
-		result[tabIdString]['active'] = false;
-		chrome.storage.local.set(result);
+		tabMap[tabId]['endTime'] = currentTime;
+		tabMap[tabId]['active'] = false;
+		chrome.storage.local.set(tabMap);
+
 		// Updating the last tabTracker
 		const tabTracker = result[tabIdString]['tabTracker']
+		if(tabTracker.length === 0){
+			return;
+		}
 		if(tabTracker.length > 0){
 			const lastTabIndex = tabTracker.length - 1;
 			const lastTabStartTime = tabTracker[lastTabIndex]['startTime'];
-			result[tabIdString]['tabTracker'][lastTabIndex]['endTime'] = currentTime;
+			tabMap[tabId]['tabTracker'][lastTabIndex]['endTime'] = currentTime;
 			const timeDiffInSec = (currentTime - lastTabStartTime)/1000;
-			result[tabIdString]['tabTracker'][lastTabIndex]['timeDiffInSec'] = timeDiffInSec;
+			tabMap[tabId]['tabTracker'][lastTabIndex]['timeDiffInSec'] = timeDiffInSec;
 
 			const lastTabUserStartTime = tabTracker[lastTabIndex]['userStartTime'];
 			const lastTabUserEndTime = tabTracker[lastTabIndex]['userEndTime'];
-			result[tabIdString]['tabTracker'][lastTabIndex]['userEndTime'] = wasTabActive ? currentTime : lastTabUserEndTime;
-			const timeSpentInSec = (result[tabIdString]['tabTracker'][lastTabIndex]['userEndTime'] - lastTabUserStartTime)/1000;
-			result[tabIdString]['tabTracker'][lastTabIndex]['timeSpentInSec'] += timeSpentInSec;
+			tabMap[tabId]['tabTracker'][lastTabIndex]['userEndTime'] = wasTabActive ? currentTime : lastTabUserEndTime;
+			const timeSpentInSec = (tabMap[tabId]['tabTracker'][lastTabIndex]['userEndTime'] - lastTabUserStartTime)/1000;
+			tabMap[tabId]['tabTracker'][lastTabIndex]['timeSpentInSec'] += timeSpentInSec;
+			tabMap[tabId]['timeSpentInSec'] += timeSpentInSec;
+			chrome.storage.local.set(tabMap);
 		}
-		chrome.storage.local.set(result);
 	});
 });
 

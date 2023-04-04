@@ -1,4 +1,4 @@
-import { truncate, formatTime, totalTimeSpent, totalTImeSpentOnVisitedURL } from "./utils.js";
+import { truncate, formatTime, totalTimeSpent, totalTImeSpentOnVisitedURL, increaseTbody } from "./utils.js";
 
 const activeTbody = document.getElementById('activeTbody');
 const closedTbody = document.getElementById('closedTbody');
@@ -10,7 +10,7 @@ const existingTabs = () => {
 		for (const tabId in result) {
 			let tabMap = {};
 			let tab = result[tabId];
-			if(tab.endTime){
+			if(tab['endTime'] !== null){
 				tab['timeDiff'] = Math.round((tab.endTime - tab.startTime)/1000);
 				closedTbody.innerHTML += displayInTbody(tab);;
 			}else{
@@ -156,12 +156,14 @@ function closed(){
 	closedDiv.style = "display: block";
 	clearHistoryBtn.style = "display: block";
 	toggleBtn.style.left = "120px"
+	increaseTbody(closedTbody);
 }
 function active(){
 	closedDiv.style = "display: none";
 	clearHistoryBtn.style = "display: none";
 	activeDiv.style = "display: block";
-	toggleBtn.style.left = "0px"
+	toggleBtn.style.left = "0px";
+	increaseTbody(activeTbody);
 }
 
 const clearHistory = document.getElementById("clearHistory");
