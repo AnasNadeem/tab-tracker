@@ -31,7 +31,7 @@ export const totalTImeSpentOnVisitedURL = (visitedUrlInTab, currentTime) => {
 
 export const increaseTbody = (tbody) => {
 	if (tbody.scrollHeight > tbody.clientHeight){
-		tbody.style.width = 'calc(100% + 16px)';
+		tbody.style.width = 'calc(100% + 1rem)';
 	}else{
 		tbody.style.width = '100%';
 	}

@@ -34,6 +34,7 @@ const existingTabs = () => {
 			}
 		}
 	});
+	increaseTbody(activeTbody);
 }
 
 existingTabs();
@@ -52,7 +53,6 @@ const displayInTbody = (tab, currentTime) => {
 	`;
 
 	const td2 = document.createElement('td');
-	// td2.className = 'time-td';
 	td2.innerHTML = formatTime(totalTimeSpent(tab, currentTime));
 
 	const td3 = document.createElement('td');
@@ -79,17 +79,21 @@ const displayInModalBody = (visitedUrlInTab) => {
 
 	const currentTime = new Date().getTime();
 	const td2 = document.createElement('td');
-	let td2TimeText = formatTime(totalTImeSpentOnVisitedURL(visitedUrlInTab, currentTime));
-	td2TimeText += ' | ';
+	td2.innerHTML = formatTime(totalTImeSpentOnVisitedURL(visitedUrlInTab, currentTime));
+
+	const td3 = document.createElement('td');
+	let td2TimeText = '';
 	if(visitedUrlInTab.timeDiffInSec){
 		td2TimeText += formatTime(visitedUrlInTab.timeDiffInSec);
 	}else{
 		const timeDiffInSec = (currentTime - visitedUrlInTab.startTime)/1000;
 		td2TimeText += formatTime(timeDiffInSec) + ' (current)';
 	}
-	td2.innerHTML = td2TimeText;
+	td3.innerHTML = td2TimeText;
+
 	tr.appendChild(td1);
 	tr.appendChild(td2);
+	tr.appendChild(td3);
 
 	return tr.outerHTML;
 }
@@ -132,6 +136,7 @@ const openModelOnClick = (e) => {
 		for (const visitedUrlInTab of tabTracker){
 			modalBody.innerHTML += displayInModalBody(visitedUrlInTab);
 		}
+		increaseTbody(modalBody);
 	});
 };
 

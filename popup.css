@@ -168,20 +168,24 @@ a:hover{
     background-color: rgb(0,0,0); /* Fallback color */
     background-color: rgba(0,0,0,0.175); /* Black w/ opacity */
 }
+.modal-container{
+    display: flex;
+    justify-content: center;
+    height: 100%;
+}
 .modal-content {
+    width: 270px;
     background-color: #fefefe;
-    left: 50;
     padding-top: 5px;
     border: 1px solid var(--accentCol);
     border-radius: .5rem;
 }
 .modal-close{
     color: black;
-    float: right;
     font-size: 28px;
     font-weight: bold;
     margin-top: 3.25rem;
-    margin-right: 3rem;
+    margin-left: 15rem;
 }
 .modal-close:hover,
 .modal-close:focus {
