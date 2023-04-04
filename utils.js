@@ -28,3 +28,11 @@ export const totalTImeSpentOnVisitedURL = (visitedUrlInTab, currentTime) => {
 		return visitedUrlInTab.timeSpentInSec + (currentTime - visitedUrlInTab.userStartTime)/1000;
 	}
 }
+
+export const increaseTbody = (tbody) => {
+	if (tbody.scrollHeight > tbody.clientHeight){
+		tbody.style.width = 'calc(100% + 16px)';
+	}else{
+		tbody.style.width = '100%';
+	}
+}
