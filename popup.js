@@ -26,6 +26,7 @@ const existingTabs = () => {
 					tab['timeDiff'] = (currentTime- tab.startTime)/1000;;
 					const tabRow = displayInTbody(tab, currentTime);
 					activeTbody.innerHTML += tabRow;
+					increaseTbody(activeTbody);
 				})
 				.catch( error => {
 					chrome.storage.local.remove(tabId)
@@ -168,7 +169,6 @@ function active(){
 	clearHistoryBtn.style = "display: none";
 	activeDiv.style = "display: block";
 	toggleBtn.style.left = "0px";
-	increaseTbody(activeTbody);
 }
 
 const clearHistory = document.getElementById("clearHistory");

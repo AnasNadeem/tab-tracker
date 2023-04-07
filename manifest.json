@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Tab Time Tracker",
-  "description": "Track the time of tab from the moment you create till after closing it with breakdown of browsing history",
-  "version": "0.1.0",
+  "description": "Track time spent on each tab and URL with the Tab Time Tracker extension for better productivity and browsing habit management",
+  "version": "0.1.1",
   "icons": {
     "32": "images/icon-32.png",
     "64": "images/icon-64.png",
@@ -11,7 +11,7 @@
     "768": "images/icon-768.png"
   },
   "action": {
-    "default_title": "Tab Tracker",
+    "default_title": "Tab Time Tracker",
     "default_popup": "popup.html"
   },
   "background": {
