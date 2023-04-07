@@ -14,6 +14,9 @@ export function formatTime(timeInSec){
 export const totalTimeSpent = (tab, currentTime) => {
 	const lastTabIndex = tab.tabTracker.length - 1;
 	const lastTab = tab.tabTracker[lastTabIndex];
+	if (lastTab === undefined){
+		return tab.timeSpentInSec;
+	}
 	if((lastTab.userStartTime && lastTab.userEndTime) || (!lastTab.userStartTime && !lastTab.userEndTime)){
 		return tab.timeSpentInSec;
 	}else{
