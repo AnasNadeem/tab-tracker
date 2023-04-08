@@ -2,6 +2,8 @@
 
 ## Track the time you spent on a tab.
 
+### [Download](https://chrome.google.com/webstore/detail/tab-time-tracker/nmopfbobjebfhkhnlkemgpjkncbenihj) the extension in your browser.
+
 ### Features:
 1. Track your time spent on tabs vs the total time of a tab
 2. Track activity even on the closed tab
