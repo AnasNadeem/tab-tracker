@@ -1,56 +1,88 @@
-<link href="popup.css" rel="stylesheet" type="text/css" />
-<div class="container">
-    <div class="button-box">
-        <div id="toggleBtn"></div>
-        <button id="activeBtn" class="toggle-btn">active</button>
-        <button id="closeBtn" class="toggle-btn">closed</button>
-    </div>
-    <div id="active" class="data-box">
-        <table>
-          <thead>
-            <tr>
-              <th>NAME</th>
-              <th>SPENT</th>
-              <th>TOTAL</th>
-            </tr>
-          </thead>
-          <tbody id="activeTbody"></tbody>
-        </table>
-    </div>
-    <div id="closed" class="data-box">
-      <table>
-        <thead>
-          <tr>
-            <th>NAME</th>
-            <th>SPENT</th>
-            <th>TOTAL</th>
-          </tr>
-        </thead>
-        <tbody id="closedTbody"></tbody>
-      </table>
-    </div>
-    <div id="clearHistoryBtn">
-      <button id="clearHistory" class="clearBtn">
-        Clear history
-      </button>
-    </div>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tab Time Tracker</title>
+    <link href="popup.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-title">
+                <h1>Tab Tracker</h1>
+                <div class="theme-toggle">
+                    <button id="themeToggle" class="theme-btn" title="Toggle theme">
+                        <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>
+                        </svg>
+                        <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </header>
 
-<div id="myModal" class="modal">
-  <div class="modal-container">
-    <span class="modal-close">&times;</span>
-    <div class="modal-content">
-      <table>
-        <thead>
-          <tr>
-            <th>NAME</th>
-            <th>SPENT</th>
-            <th>TOTAL</th>
-          </tr>
-        </thead>
-        <tbody id="modalBody"></tbody>
-      </table>
+        <!-- Tab Navigation -->
+        <nav class="tab-nav">
+            <button id="activeBtn" class="nav-btn active" data-tab="active">
+                <span class="nav-icon">●</span>
+                Active
+            </button>
+            <button id="closedBtn" class="nav-btn" data-tab="closed">
+                <span class="nav-icon">○</span>
+                History
+            </button>
+        </nav>
+
+        <!-- Content Area -->
+        <main class="content">
+            <!-- Active Tabs View -->
+            <div id="activeView" class="tab-view active">
+                <div class="stats-summary">
+                    <div class="stat-card">
+                        <span class="stat-value" id="activeTabs">0</span>
+                        <span class="stat-label">Active Tabs</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-value" id="totalTime">0m</span>
+                        <span class="stat-label">Total Time</span>
+                    </div>
+                </div>
+                <div class="tab-list" id="activeTabList"></div>
+            </div>
+
+            <!-- Closed Tabs View -->
+            <div id="closedView" class="tab-view">
+                <div class="view-header">
+                    <h2>Browsing History</h2>
+                    <button id="clearHistoryBtn" class="clear-btn">Clear All</button>
+                </div>
+                <div class="tab-list" id="closedTabList"></div>
+            </div>
+        </main>
     </div>
-  </div>
-</div>
-<script type="module" src="popup.js"></script>
+
+    <!-- Modal for detailed view -->
+    <div id="detailModal" class="modal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Tab Details</h3>
+                <button class="modal-close" id="modalClose">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <script type="module" src="popup.js"></script>
+</body>
+</html>
