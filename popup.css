@@ -82,11 +82,38 @@ body {
   align-items: center;
 }
 
+.title-section {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
 .header-title h1 {
   font-size: 20px;
   font-weight: 600;
   color: var(--text-primary);
   letter-spacing: -0.025em;
+  margin: 0;
+}
+
+.session-time {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  opacity: 0.8;
+}
+
+.session-time svg {
+  width: 14px;
+  height: 14px;
+  color: var(--accent-primary);
+}
+
+.session-time span {
+  font-weight: 500;
+  color: var(--text-secondary);
 }
 
 .theme-toggle {
@@ -261,6 +288,16 @@ body {
 .tab-item.active-tab {
   border-color: var(--accent-primary);
   background: var(--accent-secondary);
+}
+
+.tab-item:focus {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+  border-color: var(--accent-primary);
+}
+
+.tab-item:focus:not(:focus-visible) {
+  outline: none;
 }
 
 .tab-header {
@@ -544,6 +581,13 @@ body {
   color: var(--accent-primary);
 }
 
+.url-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
 .url-link-clickable {
   text-decoration: none;
   color: inherit;
@@ -552,7 +596,7 @@ body {
   cursor: pointer;
   border-radius: var(--radius-sm);
   transition: all 0.2s ease;
-  margin-bottom: 8px;
+  flex: 1;
 }
 
 .url-link-clickable:hover {
@@ -586,6 +630,38 @@ body {
   opacity: 0.7;
 }
 
+.copy-url-btn {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-secondary);
+  border-radius: var(--radius-sm);
+  padding: 6px;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+}
+
+.copy-url-btn:hover {
+  background: var(--accent-secondary);
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+.copy-url-btn.copied {
+  background: var(--success);
+  border-color: var(--success);
+  color: white;
+}
+
+.copy-url-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
 .url-times {
   display: flex;
   justify-content: space-between;
@@ -613,6 +689,7 @@ body {
   height: 48px;
   margin-bottom: 16px;
   opacity: 0.5;
+  color: var(--accent-primary);
 }
 
 .empty-state h3 {
@@ -625,6 +702,20 @@ body {
 .empty-state p {
   font-size: 14px;
   line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.empty-tip {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  margin-top: 16px;
+  display: inline-block;
+  max-width: 280px;
 }
 
 /* Scrollbar */
@@ -648,6 +739,79 @@ body {
 .tab-view::-webkit-scrollbar-thumb:hover,
 .modal-body::-webkit-scrollbar-thumb:hover {
   background: var(--text-tertiary);
+}
+
+/* Skeleton Loading States */
+.skeleton-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.skeleton-item {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.skeleton-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.skeleton-title {
+  height: 16px;
+  background: var(--border-secondary);
+  border-radius: 4px;
+  width: 60%;
+}
+
+.skeleton-badge {
+  height: 16px;
+  background: var(--border-secondary);
+  border-radius: 8px;
+  width: 50px;
+}
+
+.skeleton-url {
+  height: 12px;
+  background: var(--border-primary);
+  border-radius: 4px;
+  width: 80%;
+  margin-bottom: 12px;
+}
+
+.skeleton-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.skeleton-time {
+  height: 14px;
+  background: var(--border-secondary);
+  border-radius: 4px;
+  width: 60px;
+}
+
+.skeleton-button {
+  height: 24px;
+  background: var(--border-primary);
+  border-radius: 6px;
+  width: 70px;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
 }
 
 /* Animations */
