@@ -1,5 +1,5 @@
-export function truncate(str, n){
-    return (str.length > n) ? str.slice(0, n-1) + '&hellip;' : str;
+export function truncate(str, n) {
+    return (str.length > n) ? str.slice(0, n - 1) + '&hellip;' : str;
 };
 
 export function formatTime(timeInSec) {
@@ -23,23 +23,39 @@ export function formatTime(timeInSec) {
 }
 
 export const totalTimeSpent = (tab, currentTime) => {
-	const lastTabIndex = tab.tabTracker.length - 1;
-	const lastTab = tab.tabTracker[lastTabIndex];
-	if (lastTab === undefined){
-		return tab.timeSpentInSec;
-	}
-	if((lastTab.userStartTime && lastTab.userEndTime) || (!lastTab.userStartTime && !lastTab.userEndTime)){
-		return tab.timeSpentInSec;
-	}else{
-		return tab.timeSpentInSec + (currentTime - lastTab.userStartTime)/1000;
-	}
+    // FIX: Add defensive checks to prevent NaN
+    if (!tab || !tab.tabTracker || !Array.isArray(tab.tabTracker)) {
+        return tab?.timeSpentInSec || 0;
+    }
+    const lastTabIndex = tab.tabTracker.length - 1;
+    const lastTab = tab.tabTracker[lastTabIndex];
+    if (lastTab === undefined) {
+        return tab.timeSpentInSec || 0;
+    }
+    if ((lastTab.userStartTime && lastTab.userEndTime) || (!lastTab.userStartTime && !lastTab.userEndTime)) {
+        return tab.timeSpentInSec || 0;
+    } else {
+        // FIX: Add null check for userStartTime
+        if (!lastTab.userStartTime || !currentTime) {
+            return tab.timeSpentInSec || 0;
+        }
+        return (tab.timeSpentInSec || 0) + (currentTime - lastTab.userStartTime) / 1000;
+    }
 }
 
 export const totalTImeSpentOnVisitedURL = (visitedUrlInTab, currentTime) => {
-    if((visitedUrlInTab.userStartTime && visitedUrlInTab.userEndTime) || (!visitedUrlInTab.userStartTime && !visitedUrlInTab.userEndTime)){
-		return visitedUrlInTab.timeSpentInSec;
-	}else{
-		return visitedUrlInTab.timeSpentInSec + (currentTime - visitedUrlInTab.userStartTime)/1000;
-	}
+    // FIX: Add defensive checks to prevent NaN
+    if (!visitedUrlInTab || !currentTime) {
+        return visitedUrlInTab?.timeSpentInSec || 0;
+    }
+    if ((visitedUrlInTab.userStartTime && visitedUrlInTab.userEndTime) || (!visitedUrlInTab.userStartTime && !visitedUrlInTab.userEndTime)) {
+        return visitedUrlInTab.timeSpentInSec || 0;
+    } else {
+        // FIX: Add null check for userStartTime
+        if (!visitedUrlInTab.userStartTime) {
+            return visitedUrlInTab.timeSpentInSec || 0;
+        }
+        return (visitedUrlInTab.timeSpentInSec || 0) + (currentTime - visitedUrlInTab.userStartTime) / 1000;
+    }
 }
 

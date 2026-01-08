@@ -539,7 +539,7 @@ class TabTracker {
         if (this.modal.classList.contains('show')) return;
 
         // Handle keyboard shortcuts
-        switch(e.key) {
+        switch (e.key) {
             case '1':
             case 'a':
             case 'A':
@@ -627,9 +627,9 @@ document.addEventListener('visibilitychange', () => {
     }
 });
 
-// Auto-refresh every 5 seconds when popup is open
+// Auto-refresh every 10 seconds when popup is open (reduced from 5s for better performance)
 setInterval(() => {
     if (tabTracker && !document.hidden) {
         tabTracker.refreshData();
     }
-}, 5000);
+}, 10000);
