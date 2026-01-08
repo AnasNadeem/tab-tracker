@@ -1,5 +1,5 @@
-export function truncate(str, n){
-    return (str.length > n) ? str.slice(0, n-1) + '&hellip;' : str;
+export function truncate(str, n) {
+    return (str.length > n) ? str.slice(0, n - 1) + '&hellip;' : str;
 };
 
 export function formatTime(timeInSec) {
@@ -23,23 +23,39 @@ export function formatTime(timeInSec) {
 }
 
 export const totalTimeSpent = (tab, currentTime) => {
-	const lastTabIndex = tab.tabTracker.length - 1;
-	const lastTab = tab.tabTracker[lastTabIndex];
-	if (lastTab === undefined){
-		return tab.timeSpentInSec;
-	}
-	if((lastTab.userStartTime && lastTab.userEndTime) || (!lastTab.userStartTime && !lastTab.userEndTime)){
-		return tab.timeSpentInSec;
-	}else{
-		return tab.timeSpentInSec + (currentTime - lastTab.userStartTime)/1000;
-	}
+    // FIX: Add defensive checks to prevent NaN
+    if (!tab) {
+        return 0;
+    }
+
+    const timeSpent = tab.timeSpentInSec || 0;
+
+    if (!currentTime || !tab.tabTracker || !Array.isArray(tab.tabTracker) || tab.tabTracker.length === 0) {
+        return timeSpent;
+    }
+
+    const lastTab = tab.tabTracker[tab.tabTracker.length - 1];
+
+    // If tab is currently active, add time since userStartTime
+    if (lastTab && lastTab.userStartTime && !lastTab.userEndTime) {
+        return timeSpent + (currentTime - lastTab.userStartTime) / 1000;
+    }
+
+    return timeSpent;
 }
 
-export const totalTImeSpentOnVisitedURL = (visitedUrlInTab, currentTime) => {
-    if((visitedUrlInTab.userStartTime && visitedUrlInTab.userEndTime) || (!visitedUrlInTab.userStartTime && !visitedUrlInTab.userEndTime)){
-		return visitedUrlInTab.timeSpentInSec;
-	}else{
-		return visitedUrlInTab.timeSpentInSec + (currentTime - visitedUrlInTab.userStartTime)/1000;
-	}
+export const totalTimeSpentOnVisitedURL = (visitedUrlInTab, currentTime) => {
+    // FIX: Add defensive checks to prevent NaN
+    if (!visitedUrlInTab) {
+        return 0;
+    }
+
+    const timeSpent = visitedUrlInTab.timeSpentInSec || 0;
+
+    if (currentTime && visitedUrlInTab.userStartTime && !visitedUrlInTab.userEndTime) {
+        return timeSpent + (currentTime - visitedUrlInTab.userStartTime) / 1000;
+    }
+
+    return timeSpent;
 }
 
