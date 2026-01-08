@@ -2,13 +2,24 @@ export function truncate(str, n){
     return (str.length > n) ? str.slice(0, n-1) + '&hellip;' : str;
 };
 
-export function formatTime(timeInSec){
-    if(timeInSec>60){
-        const timeInMin = Math.round(((timeInSec/60) + Number.EPSILON)*100)/100;
-        return timeInMin + ' min';
-    }else{
-        return Math.round((timeInSec*100) +  Number.EPSILON)/100 + ' sec';
+export function formatTime(timeInSec) {
+    if (!timeInSec || timeInSec < 0) return '0s';
+
+    const hours = Math.floor(timeInSec / 3600);
+    const minutes = Math.floor((timeInSec % 3600) / 60);
+    const seconds = Math.floor(timeInSec % 60);
+
+    if (hours > 0) {
+        if (minutes > 0) return `${hours}h ${minutes}m`;
+        return `${hours}h`;
     }
+
+    if (minutes > 0) {
+        if (seconds > 0 && minutes < 10) return `${minutes}m ${seconds}s`;
+        return `${minutes}m`;
+    }
+
+    return `${seconds}s`;
 }
 
 export const totalTimeSpent = (tab, currentTime) => {
@@ -32,10 +43,3 @@ export const totalTImeSpentOnVisitedURL = (visitedUrlInTab, currentTime) => {
 	}
 }
 
-export const increaseTbody = (tbody) => {
-	if (tbody.scrollHeight > tbody.clientHeight){
-		tbody.style.width = 'calc(100% + 1rem)';
-	}else{
-		tbody.style.width = '100%';
-	}
-}
