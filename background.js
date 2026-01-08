@@ -228,6 +228,7 @@ function cleanupOldEntries() {
 		}
 		
 		const toRemove = [];
+		const updatesToSet = {};
 		for (const tabId in result) {
 			const tab = result[tabId];
 			// Remove closed tabs older than 7 days
@@ -236,14 +237,21 @@ function cleanupOldEntries() {
 			}
 			// Also cleanup tabTracker entries older than 7 days
 			else if (tab.tabTracker && tab.tabTracker.length > 0) {
+				const originalLength = tab.tabTracker.length;
 				tab.tabTracker = tab.tabTracker.filter(tracker => {
 					return !tracker.endTime || (currentTime - tracker.endTime) <= SEVEN_DAYS_MS;
 				});
-				// Update the tab with cleaned tracker
-				let updateMap = {};
-				updateMap[tabId] = tab;
-				chrome.storage.local.set(updateMap);
+				
+				// Only update if we actually removed entries
+				if (originalLength > tab.tabTracker.length) {
+					updatesToSet[tabId] = tab;
+				}
 			}
+		}
+		
+		// Batch update all modified tabs in a single storage write
+		if (Object.keys(updatesToSet).length > 0) {
+			chrome.storage.local.set(updatesToSet);
 		}
 		
 		if (toRemove.length > 0) {

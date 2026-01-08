@@ -24,38 +24,38 @@ export function formatTime(timeInSec) {
 
 export const totalTimeSpent = (tab, currentTime) => {
     // FIX: Add defensive checks to prevent NaN
-    if (!tab || !tab.tabTracker || !Array.isArray(tab.tabTracker)) {
-        return tab?.timeSpentInSec || 0;
+    if (!tab) {
+        return 0;
     }
-    const lastTabIndex = tab.tabTracker.length - 1;
-    const lastTab = tab.tabTracker[lastTabIndex];
-    if (lastTab === undefined) {
-        return tab.timeSpentInSec || 0;
+
+    const timeSpent = tab.timeSpentInSec || 0;
+
+    if (!currentTime || !tab.tabTracker || !Array.isArray(tab.tabTracker) || tab.tabTracker.length === 0) {
+        return timeSpent;
     }
-    if ((lastTab.userStartTime && lastTab.userEndTime) || (!lastTab.userStartTime && !lastTab.userEndTime)) {
-        return tab.timeSpentInSec || 0;
-    } else {
-        // FIX: Add null check for userStartTime
-        if (!lastTab.userStartTime || !currentTime) {
-            return tab.timeSpentInSec || 0;
-        }
-        return (tab.timeSpentInSec || 0) + (currentTime - lastTab.userStartTime) / 1000;
+
+    const lastTab = tab.tabTracker[tab.tabTracker.length - 1];
+
+    // If tab is currently active, add time since userStartTime
+    if (lastTab && lastTab.userStartTime && !lastTab.userEndTime) {
+        return timeSpent + (currentTime - lastTab.userStartTime) / 1000;
     }
+
+    return timeSpent;
 }
 
 export const totalTImeSpentOnVisitedURL = (visitedUrlInTab, currentTime) => {
     // FIX: Add defensive checks to prevent NaN
-    if (!visitedUrlInTab || !currentTime) {
-        return visitedUrlInTab?.timeSpentInSec || 0;
+    if (!visitedUrlInTab) {
+        return 0;
     }
-    if ((visitedUrlInTab.userStartTime && visitedUrlInTab.userEndTime) || (!visitedUrlInTab.userStartTime && !visitedUrlInTab.userEndTime)) {
-        return visitedUrlInTab.timeSpentInSec || 0;
-    } else {
-        // FIX: Add null check for userStartTime
-        if (!visitedUrlInTab.userStartTime) {
-            return visitedUrlInTab.timeSpentInSec || 0;
-        }
-        return (visitedUrlInTab.timeSpentInSec || 0) + (currentTime - visitedUrlInTab.userStartTime) / 1000;
+
+    const timeSpent = visitedUrlInTab.timeSpentInSec || 0;
+
+    if (currentTime && visitedUrlInTab.userStartTime && !visitedUrlInTab.userEndTime) {
+        return timeSpent + (currentTime - visitedUrlInTab.userStartTime) / 1000;
     }
+
+    return timeSpent;
 }
 
