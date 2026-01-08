@@ -44,7 +44,7 @@ export const totalTimeSpent = (tab, currentTime) => {
     return timeSpent;
 }
 
-export const totalTImeSpentOnVisitedURL = (visitedUrlInTab, currentTime) => {
+export const totalTimeSpentOnVisitedURL = (visitedUrlInTab, currentTime) => {
     // FIX: Add defensive checks to prevent NaN
     if (!visitedUrlInTab) {
         return 0;

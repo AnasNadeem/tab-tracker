@@ -1,4 +1,4 @@
-import { truncate, formatTime, totalTimeSpent, totalTImeSpentOnVisitedURL } from "./utils.js";
+import { truncate, formatTime, totalTimeSpent, totalTimeSpentOnVisitedURL } from "./utils.js";
 
 class TabTracker {
     constructor() {
@@ -318,7 +318,7 @@ class TabTracker {
 
     createUrlItem(urlData) {
         const currentTime = new Date().getTime();
-        const timeSpent = totalTImeSpentOnVisitedURL(urlData, currentTime);
+        const timeSpent = totalTimeSpentOnVisitedURL(urlData, currentTime);
         const totalTime = urlData.timeDiffInSec || (currentTime - urlData.startTime) / 1000;
         const isCurrentUrl = !urlData.endTime;
 
