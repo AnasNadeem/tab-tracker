@@ -1,0 +1,5 @@
+dist/
+tab-time-tracker.zip
+node_modules/
+
+.DS_Store
